@@ -3,9 +3,13 @@ class Note {
   String title;
   String body;
 
-  Note({required this.id, required this.title, required this.body});
+  Note({
+    required this.id,
+    required this.title,
+    required this.body,
+  });
 
-  Note copyWidth({int? id, String? title, String? body}) {
+  Note copyWith({int? id, String? title, String? body}) {
     return Note(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -26,6 +30,15 @@ class Note {
       id: map['id'],
       title: map['title'],
       body: map['body'],
+    );
+  }
+
+  // Additional method to convert from JSON
+  factory Note.fromJson(Map<String, dynamic> json) {
+    return Note(
+      id: json['id'],
+      title: json['title'],
+      body: json['body'],
     );
   }
 }

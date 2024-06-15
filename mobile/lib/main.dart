@@ -1,23 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/add_note_page.dart';
+import 'package:mobile/home_page.dart';
+import 'package:mobile/note_page.dart';
 import 'package:mobile/notes_page.dart';
+import 'package:go_router/go_router.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
+
+/// The route configuration.
+final GoRouter _router = GoRouter(
+  routes: <RouteBase>[
+    GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return const HomePageWidget();
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: 'notes',
+          builder: (BuildContext context, GoRouterState state) {
+            return const NotesListPageWidget();
+          },
+          routes: <RouteBase>[
+            GoRoute(
+              path: ':id',
+              builder: (BuildContext context, GoRouterState state) {
+                final noteId = state.pathParameters['id'];
+                return NotePageWidget(noteId: noteId!);
+              },
+            ),
+          ],
+        ),
+      ],
+    ),
+  ],
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const NotesListPageWidget(),
+      routerConfig: _router,
     );
   }
 }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+//         useMaterial3: true,
+//       ),
+//       routes: {
+//         '/': (context) => const HomePageWidget(),
+//         '/notes': (context) => const NotesListPageWidget(),
+//         '/notes/:id': (context) => const NotePageWidget(),
+//         '/addNote': (context) => const AddNoteWidget(),
+//       },
+//     );
+//   }
+// }

@@ -1,20 +1,44 @@
+// import 'package:flutter/material.dart';
+
+// class NotePageWidget extends StatelessWidget {
+//   final String noteId;
+
+//   const NotePageWidget({super.key, required this.noteId});
+
+//   @override
+//   Widget build(BuildContext context) {
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("Note Page"),
+//       ),
+//       body: Center(
+//         child: Text("Note ID: $noteId"),
+//       ),
+//     );
+//   }
+// }
+
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'note.dart';
+import 'package:mobile/note.dart';
 
-class NotesListPageWidget extends StatefulWidget {
-  const NotesListPageWidget({super.key});
+class NotePageWidget extends StatefulWidget {
+  final String noteId;
+
+  const NotePageWidget({super.key, required this.noteId});
 
   @override
-  State<NotesListPageWidget> createState() => _NotesListPageWidgetState();
+  State<NotePageWidget> createState() => _NotePageWidgetState();
 }
 
-class _NotesListPageWidgetState extends State<NotesListPageWidget> {
+class _NotePageWidgetState extends State<NotePageWidget> {
   Client client = http.Client();
   List<Note> notes = [];
+  Map<String, dynamic> neededNote = {};
 
   Future<void> fetchNotes() async {
     print('1');
@@ -28,6 +52,10 @@ class _NotesListPageWidgetState extends State<NotesListPageWidget> {
       var data = jsonDecode(response.body) as List;
       setState(() {
         notes = data.map((object) => Note.fromJson(object)).toList();
+        neededNote = notes
+            .where((note) => note.id == int.parse(widget.noteId))
+            .first
+            .toMap();
         print('2');
       });
     } else {
@@ -50,18 +78,17 @@ class _NotesListPageWidgetState extends State<NotesListPageWidget> {
           title: const Text("Notes List"),
           backgroundColor: Colors.black26,
         ),
-        body: notes.isEmpty
+        body: neededNote.isEmpty
             ? const Center(child: CircularProgressIndicator())
             : ListView.builder(
-                itemCount: notes.length,
+                itemCount: 1,
                 itemBuilder: (context, index) {
-                  final note = notes[index];
+                  final note = neededNote;
                   return Card(
                     color: Colors.black26,
                     child: ListTile(
-                      title: Text(note.title),
-                      subtitle: Text(note.body),
-                      onTap: () => context.go('/notes/${note.id}'),
+                      title: Text(note['title']),
+                      subtitle: Text(note['body']),
                     ),
                   );
                 },
