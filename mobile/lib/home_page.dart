@@ -34,6 +34,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ),
             ElevatedButton(
                 onPressed: setToggle, child: const Text("Toggle!!!")),
+            ElevatedButton(
+                onPressed: () => context.go('/state_manage'),
+                child: const Text("State management!!!")),
+            ElevatedButton(
+                onPressed: setToggle, child: const Text("Toggle!!!")),
             if (isShow) const Text("Toggle")
           ],
         ),

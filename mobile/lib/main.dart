@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/add_note_page.dart';
+// import 'package:mobile/add_note_page.dart';
 import 'package:mobile/home_page.dart';
 import 'package:mobile/note_page.dart';
 import 'package:mobile/notes_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/state_manage.dart';
+import 'package:mobile/counter.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(
+      MultiProvider(
+        providers: [ChangeNotifierProvider(create: (context) => Counter())],
+        child: const MyApp(),
+      ),
+    );
 
 /// The route configuration.
 final GoRouter _router = GoRouter(
@@ -30,6 +38,12 @@ final GoRouter _router = GoRouter(
               },
             ),
           ],
+        ),
+        GoRoute(
+          path: 'state_manage',
+          builder: (BuildContext context, GoRouterState state) {
+            return const StateManagementWidget();
+          },
         ),
       ],
     ),

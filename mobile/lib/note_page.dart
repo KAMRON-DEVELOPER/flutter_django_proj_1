@@ -21,6 +21,7 @@
 
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -62,6 +63,24 @@ class _NotePageWidgetState extends State<NotePageWidget> {
       throw Exception("Failed to load notes");
     }
   }
+
+  // Future<void> fetchNotes() async {
+  //   print('1');
+  //   final response = await Dio().get('http://192.168.31.42:8000/notes/');
+  //   if (response.statusCode == 200) {
+  //     var data = jsonDecode(response.data) as List;
+  //     setState(() {
+  //       notes = data.map((object) => Note.fromJson(object)).toList();
+  //       neededNote = notes
+  //           .where((note) => note.id == int.parse(widget.noteId))
+  //           .first
+  //           .toMap();
+  //       print('2');
+  //     });
+  //   } else {
+  //     throw Exception("Failed to load notes");
+  //   }
+  // }
 
   @override
   void initState() {
